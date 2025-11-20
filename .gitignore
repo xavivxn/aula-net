@@ -1,0 +1,28 @@
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Logs
+*.log
+
+# Archivos de configuración local (si tienes)
+config.local.php
+
+# Carpeta de vendor si usas Composer
+vendor/
+
+# Node modules si usas npm
+node_modules/
+
+# Archivos IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
