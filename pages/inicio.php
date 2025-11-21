@@ -24,6 +24,7 @@ $clases = $clasesPopulares->obtenerClases();
                 <ul>
                     <li><a href="inicio.php" class="active">Inicio</a></li>
                     <li><a href="contacto.php">Contáctenos</a></li>
+                    <li><a href="../wordpress/" target="_blank">Biblioteca de Recursos</a></li>
                     <li><a href="https://empleosnoticias.blogspot.com/2025/10/los-empleos-mas-frecuentes-y-con-mayor.html" target="_blank">Noticias</a></li>
                     <li class="user-menu">
                         <span>Bienvenido, <?php echo ucwords(htmlspecialchars($sesion['usuario'])); ?></span>
