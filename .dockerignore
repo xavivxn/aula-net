@@ -1,0 +1,7 @@
+wordpress/
+.git/
+.gitignore
+*.md
+CHECKLIST_PROYECTO.md
+test.php
+

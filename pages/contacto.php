@@ -7,7 +7,7 @@ $sesion = verificarSesion();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contáctanos - Aula.Net</title>
+    <title>Contáctanos - Naser Fernandez - Aula.Net</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
@@ -25,7 +25,7 @@ $sesion = verificarSesion();
                     <li><a href="https://empleosnoticias.blogspot.com/2025/10/los-empleos-mas-frecuentes-y-con-mayor.html" target="_blank">Noticias</a></li>
                     <li class="user-menu">
                         <span>Bienvenido, <?php echo ucwords(htmlspecialchars($sesion['usuario'])); ?></span>
-                        <a href="../includes/logout.php" class="logout-btn" style="color: white;">Cerrar Sesión</a>
+                        <a href="../includes/logout.php" class="logout-btn">Cerrar Sesión</a>
                     </li>
                 </ul>
             </nav>
@@ -228,6 +228,7 @@ $sesion = verificarSesion();
     <footer class="main-footer">
         <div class="container">
             <p>&copy; 2025 Aula.Net. Grupo 7 - Plataforma de Clases Particulares.</p>
+            <p>Desarrollado por: Naser Fernandez, Ivan Ortiz y Saul Iglesias</p>
         </div>
     </footer>
 

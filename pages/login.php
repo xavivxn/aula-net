@@ -1,28 +1,47 @@
 <?php
 session_start();
+require_once '../includes/config.php';
+
 // Si ya está logueado, redirigir al inicio
 if (isset($_SESSION['usuario'])) {
     header("Location: inicio.php");
     exit();
 }
 
-// Datos de ejemplo
-$usuarios_validos = [
-    'alumno' => '1234'
-];
-
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    if (isset($usuarios_validos[$usuario]) && $usuarios_validos[$usuario] === $password) {
-        $_SESSION['usuario'] = $usuario;
-        $_SESSION['tipo'] = $usuario;
-        header("Location: inicio.php");
-        exit();
+    if (empty($usuario) || empty($password)) {
+        $error = "Por favor, complete todos los campos";
     } else {
-        $error = "Usuario o contraseña incorrectos";
+        $pdo = getDBConnection();
+        
+        if ($pdo === false) {
+            $error = "Error de conexión a la base de datos. Por favor, contacte al administrador.";
+        } else {
+            try {
+                $stmt = $pdo->prepare("SELECT id, usuario, password, tipo, nombre_completo, email FROM usuarios WHERE usuario = ? AND activo = 1");
+                $stmt->execute([$usuario]);
+                $user = $stmt->fetch();
+                
+                if ($user && password_verify($password, $user['password'])) {
+                    $_SESSION['usuario'] = $user['usuario'];
+                    $_SESSION['usuario_id'] = $user['id'];
+                    $_SESSION['tipo'] = $user['tipo'];
+                    $_SESSION['nombre_completo'] = $user['nombre_completo'];
+                    $_SESSION['email'] = $user['email'];
+                    header("Location: inicio.php");
+                    exit();
+                } else {
+                    $error = "Usuario o contraseña incorrectos";
+                }
+            } catch (PDOException $e) {
+                error_log("Error en login: " . $e->getMessage());
+                $error = "Error al procesar la solicitud. Por favor, intente nuevamente.";
+            }
+        }
     }
 }
 ?>
@@ -31,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Aula.Net</title>
+    <title>Login - Naser Fernandez - Aula.Net</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body class="login-body">
@@ -72,5 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="../images/login-image.jpg" alt="Estudiantes aprendiendo" class="login-image">
         </div>
     </div>
+    
+    <footer class="main-footer" style="position: fixed; bottom: 0; width: 100%; background: var(--dark-color); color: white; padding: 15px 0; text-align: center;">
+        <div class="container">
+            <p style="margin: 5px 0;">&copy; 2025 Aula.Net. Grupo 7 - Plataforma de Clases Particulares.</p>
+            <p style="margin: 5px 0;">Desarrollado por: Naser Fernandez, Ivan Ortiz y Saul Iglesias</p>
+        </div>
+    </footer>
 </body>
 </html>

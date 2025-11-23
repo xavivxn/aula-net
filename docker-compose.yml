@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Servidor web con PHP y Apache
+  web:
+    build: .
+    container_name: aula-net-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./apache-config.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=aula_net
+      - DB_USER=aula_user
+      - DB_PASS=aula_password
+    networks:
+      - aula-net-network
+
+  # Base de datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: aula-net-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: aula_net
+      MYSQL_USER: aula_user
+      MYSQL_PASSWORD: aula_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - aula-net-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # phpMyAdmin (opcional, para gestión de BD)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: aula-net-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: aula_user
+      PMA_PASSWORD: aula_password
+    depends_on:
+      - db
+    networks:
+      - aula-net-network
+
+networks:
+  aula-net-network:
+    driver: bridge
+
+volumes:
+  db_data:
+
