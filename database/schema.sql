@@ -100,3 +100,4 @@ CREATE INDEX idx_clases_categoria ON clases(categoria);
 CREATE INDEX idx_inscripciones_estado ON inscripciones(estado);
 CREATE INDEX idx_usuarios_tipo ON usuarios(tipo);
 
+
